@@ -1,0 +1,2 @@
+# spotlite-websocket
+spotlite使用的基于netty框架实现的websocket通信项目，用于直播间礼物消息、聊天消息等的推送
