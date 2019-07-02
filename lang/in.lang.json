@@ -1,0 +1,10 @@
+{
+  "INFO_JOIN":          "acaba de llegar.",
+  "ERROR_ANCHORNOTLIVE":          " la emisora ​​no ha comenzado la transmisión en vivo.",
+  "ERROR_DISABLE_AUTHORITY":          "no tienes.",
+  "ERROR_DISABLE_WORDS":          "el mensaje contiene.",
+  "ERROR_WORDS_LENGTH":          "el mensaje es demasiado largo.",
+  "ERROR_WORDS_FAST":          "enviaste.",
+  "INFO_ANNOUNCE":  "Welcome to SPOTLITE. We will work together to create a better living environment.",
+  "ERROR_GAG": "You have been banned."
+}

@@ -1,0 +1,10 @@
+{
+  "INFO_JOIN":          "just arrived.",
+  "ERROR_ANCHORNOTLIVE":          "anchor hasn't started live streaming",
+  "ERROR_DISABLE_AUTHORITY":          "you don't have authorization to ban this person",
+  "ERROR_DISABLE_WORDS":          "message contains sensitive words",
+  "ERROR_WORDS_LENGTH":          "message is too long",
+  "ERROR_WORDS_FAST":          "You sent too many messages in a short period of time",
+  "INFO_ANNOUNCE":  "Welcome to SPOTLITE. We will work together to create a better living environment.",
+  "ERROR_GAG": "You have been banned."
+}

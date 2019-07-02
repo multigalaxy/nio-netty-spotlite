@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. --><project basedir="." default="build" name="chattvserver">
+    <property environment="env"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
+    <path id="chattvserver.classpath">
+        <pathelement location="bin"/>
+        <pathelement location="libs/commons-codec-1.6.jar"/>
+        <pathelement location="libs/commons-logging-1.1.3.jar"/>
+        <pathelement location="libs/commons-pool-1.5.4.jar"/>
+        <pathelement location="libs/gson-2.2.4.jar"/>
+        <pathelement location="libs/guava-15.0.jar"/>
+        <pathelement location="libs/httpasyncclient-4.0.jar"/>
+        <pathelement location="libs/httpasyncclient-cache-4.0.jar"/>
+        <pathelement location="libs/httpclient-4.3.1.jar"/>
+        <pathelement location="libs/httpclient-cache-4.3.1.jar"/>
+        <pathelement location="libs/httpcore-4.3.jar"/>
+        <pathelement location="libs/httpcore-nio-4.3.jar"/>
+        <pathelement location="libs/jedis-2.1.0.jar"/>
+        <pathelement location="libs/log4j-api-2.1.jar"/>
+        <pathelement location="libs/log4j-core-2.1.jar"/>
+        <pathelement location="libs/java-metrics-20151117.jar"/>
+        <pathelement location="libs/slf4j-api-1.7.12.jar"/>
+        <pathelement location="libs/netty-all-4.0.30.Final.jar"/>
+		<pathelement location="libs/fastjson-1.1.39.jar"/>
+    </path>
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+      <target name="svnversion">
+        <exec executable="./svn_version.sh" outputproperty="svnversion" />
+        <echo message="SVN Version: ${svnversion}"/>
+      </target>
+     <!--  打包jar文件 -->
+    <property name="lib.dir" value="libs"/>
+    <property name="src.dir" value="src"/>
+    <property name="classes.dir" value="bin"/>
+    <tstamp>
+    <format property="date.str" pattern="yyyy-MM-dd"/>
+    </tstamp>
+    <property name="output.dir" value="out"/>
+    <!--property name="mainclass" value="org.changba.ktvroom.LiveChatServer"/-->
+    <property name="mainclass" value="icblive.chatserver.service.LiveChatServer2"/>
+     
+      <path id="lib-classpath">
+        <fileset dir="${lib.dir}">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+     
+    <target name="jar" depends="clean, build">     
+    <property name="jarname" value="webchat.${date.str}_r${svnversion}.jar"/>
+        <copy todir="${output.dir}/lib">
+            <fileset dir="${lib.dir}"/>
+        </copy>
+
+        <!--Create a property containing all .jar files,
+        prefix lib/, and seperated with a space-->
+        <pathconvert property="mf.classpath" pathsep=" ">
+            <mapper>
+                <chainedmapper>
+                    <!-- jar包文件只留文件名，去掉目录信息 -->
+                    <flattenmapper/>
+                    <!-- add lib/ prefix -->
+                    <globmapper from="*" to="lib/*"/>
+                </chainedmapper>
+            </mapper>
+            <path refid="lib-classpath"/>
+         </pathconvert>
+
+        <!-- jar文件的输出路径 -->
+        <jar destfile="${output.dir}/${jarname}" basedir="${classes.dir}">
+            <manifest>
+                <attribute name="Main-class" value="${mainclass}"/>
+                <attribute name="Class-Path" value="${mf.classpath}"/>
+            </manifest>
+            <zipgroupfileset  dir="${output.dir}/lib"  includes="*.jar"/>
+           <!--  <zipfileset dir="${output.dir}/lib" includes="**.jar"/>  -->
+        </jar>
+        <delete dir="${output.dir}/lib" />
+    </target>
+    
+    <target name="clean">
+        <delete dir="bin"/>
+        <delete dir="${output.dir}/lib" />
+    </target>
+    <target depends="clean" name="cleanall">
+        <delete dir="${output.dir}" />    
+    </target>
+    <target depends="build-subprojects,build-project, svnversion" name="build"/>
+    <target name="build-subprojects"/>
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <classpath refid="chattvserver.classpath"/>
+        </javac>
+    </target>
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+        <copy todir="${ant.library.dir}">
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </copy>
+        <unzip dest="${ant.library.dir}">
+            <patternset includes="jdtCompilerAdapter.jar"/>
+            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
+        </unzip>
+    </target>
+    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
+        <antcall target="build"/>
+    </target>
+</project>

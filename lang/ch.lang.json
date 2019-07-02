@@ -1,0 +1,10 @@
+{
+  "INFO_JOIN":          "加入了房间",
+  "ERROR_ANCHORNOTLIVE":          "主播没有开播",
+  "ERROR_DISABLE_AUTHORITY":          "无禁言权限",
+  "ERROR_DISABLE_WORDS":          "消息中含有敏感词",
+  "ERROR_WORDS_LENGTH":          "消息太长",
+  "ERROR_WORDS_FAST":          "发言过于频繁",
+  "INFO_ANNOUNCE":  "Welcome to SPOTLITE. We will work together to create a better living environment.",
+  "ERROR_GAG": "你已经被禁言"
+}

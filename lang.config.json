@@ -1,0 +1,8 @@
+{
+  "version":              1,
+  "support_languages":    "en_lang,ch_lang,es_lang,hi_lang",
+  "en_lang": "./lang/en.lang.json",
+  "ch_lang": "./lang/ch.lang.json",
+  "es_lang": "./lang/es.lang.json",
+  "hi_lang": "./lang/hi.lang.json"
+}

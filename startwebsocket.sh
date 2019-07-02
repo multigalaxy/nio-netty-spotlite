@@ -1,0 +1,1 @@
+#nohup java -verbose:gc -Xms1500M -Xmx4048M -XX:MaxDirectMemorySize=3000M -Dio.netty.resourceLeakDetection -jar out/icblivechatserver_20180613.jar &

@@ -1,0 +1,12 @@
+{
+  "ws_port": 8086,
+  "liveapi_debug": "kulv201315",
+  "token_redis_ip": "192.168.40.146",
+  "main_redis_ip": "192.168.40.146",
+  "liveapi_url": "https://api.spotliteapi.com/liveapi/",
+  "forbbidenword_file": "forbiddenwords.txt",
+  "bencheventpoolsize": 10,
+  "max_concurrent_http_conn": 48,
+  "max_processinnermsg_worker_count": 8,
+  "emoji_file": "emoji_unicode.data"
+}
