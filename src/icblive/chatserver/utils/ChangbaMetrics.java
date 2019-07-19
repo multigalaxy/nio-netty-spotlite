@@ -20,7 +20,7 @@ import io.dropwizard.metrics.graphite.Graphite;
 import io.dropwizard.metrics.graphite.GraphiteReporter;
 
 /**
- * @author jgao
+ * @author xiaol
  *
  */
 public class ChangbaMetrics {

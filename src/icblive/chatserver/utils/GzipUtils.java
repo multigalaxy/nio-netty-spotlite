@@ -15,7 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * @author jgao
+ * @author xiaol
  *
  */
 public class GzipUtils {

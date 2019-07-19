@@ -36,7 +36,7 @@ import icblive.chatserver.model.json.ResponseMessage.ResponseEntry;
 import icblive.chatserver.utils.RedisHelper;
 
 /**
- * @author jgao
+ * @author xiaol
  *
  */
 public class APICallbackHandler implements FutureCallback<String>{
@@ -84,7 +84,7 @@ public class APICallbackHandler implements FutureCallback<String>{
 		}
 	}
 
-
+	// 处理server端发来的消息体：{sessionid, userid, sendtype, jsondata}
 	public void dealWithResponseEntry(ResponseEntry entry) {
 		BaseMessage baseMsg = JSON.parseObject(entry.jsondata, BaseMessage.class);
 		if (Objects.equal("global", entry.sendtype)){//要发送全站通知，那么就发给所有用户

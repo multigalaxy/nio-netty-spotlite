@@ -6,7 +6,7 @@ package icblive.chatserver.utils;
 import com.google.common.base.Strings;
 
 /**
- * @author jgao
+ * @author xiaol
  *
  */
 public class UsersHelper {

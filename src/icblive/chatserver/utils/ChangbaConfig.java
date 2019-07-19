@@ -19,7 +19,7 @@ import icblive.chatserver.service.LiveChatServer2;
 
 
 /**
- * @author jgao
+ * @author xiaol
  *
  */
 public class ChangbaConfig {

@@ -31,12 +31,12 @@ import icblive.chatserver.utils.ChatCount;
 import icblive.chatserver.utils.RedisHelper;
 
 /**
- * @author jgao
+ * @author xiaol
  *
  */
 /**
  * 
- * @author jgao
+ * @author xiaol
  *  有两种类型的数据, 一种是可以重启丢失的, 一种需要dump到文件,在重启的时候自动加载.
  */
 public class LiveCache {

@@ -1,7 +1,7 @@
 package icblive.chatserver.model.json;
 
 /**
- * @author yangfei
+ * @author xiaol
  * 
  */
 

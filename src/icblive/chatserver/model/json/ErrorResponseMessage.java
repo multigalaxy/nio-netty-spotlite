@@ -4,7 +4,7 @@
 package icblive.chatserver.model.json;
 
 /**
- * @author jgao
+ * @author xiaol
  *
  */
 public class ErrorResponseMessage extends BaseMessage{

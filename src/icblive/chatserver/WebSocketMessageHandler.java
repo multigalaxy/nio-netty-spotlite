@@ -75,7 +75,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketServerHandshakerFactory;
 import io.netty.util.CharsetUtil;
 /**
  * 
- * @author yangfei
+ * @author xiaol
  * @date   2016/10/25
  */
 public class WebSocketMessageHandler extends SimpleChannelInboundHandler<Object> {
@@ -175,7 +175,28 @@ public class WebSocketMessageHandler extends SimpleChannelInboundHandler<Object>
 	}
 	/* ------------------------------------------------------------------------------------ */
 
-	// 1、管道接收请求
+	@Override
+	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+		//连接断开后 就会调用这里
+		logger.info(curUser+" @ "+ctx +" disconnected by channelInactive");
+		if(curUser !=null && curUser.userinfo !=null){
+			SessionActionHandler.exitroom(Integer.parseInt(curUser.sessionid), curUser);
+		}
+	}
+	@Override
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+		logger.error(curUser+" @ "+ctx +" disconnected by exceptionCaught" + cause.getMessage());
+		if(curUser !=null && curUser.userinfo !=null){
+			SessionActionHandler.exitroom(Integer.parseInt(curUser.sessionid), curUser);
+		}
+	}
+	public static void clientCleanUp(ChannelHandlerContext ctx) {
+		//TODO onClose();
+		ctx.channel().close();
+		ctx.close();
+	}
+
+	// 1、从管道读取到数据
 	@Override
 	protected void channelRead0(ChannelHandlerContext ctx, Object msg) throws Exception {
 		if(this.curUser!=null){
@@ -188,7 +209,7 @@ public class WebSocketMessageHandler extends SimpleChannelInboundHandler<Object>
 			// http请求，如spotlite后端服务
 			handleHttpRequest(ctx, (FullHttpRequest) msg);
 		} else if (msg instanceof WebSocketFrame) {
-			// socket请求，如app和spotlite后端服务都会有
+			// websocket请求，如app和spotlite后端服务都会有
 			handleWebSocketFrame(ctx, (WebSocketFrame) msg);
 		}
 	}
@@ -431,7 +452,7 @@ public class WebSocketMessageHandler extends SimpleChannelInboundHandler<Object>
 			sendHttpResponse(ctx, req, response );
 			return;
 		}
-		// Handshake
+		// 握手协议
 		WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(getWebSocketLocation(req), null, false);
 		handshaker = wsFactory.newHandshaker(req);
 		if (handshaker == null) {
@@ -453,6 +474,7 @@ public class WebSocketMessageHandler extends SimpleChannelInboundHandler<Object>
 			}
 		}
 	}
+	// websocket客户端链接
 	private static String getWebSocketLocation(FullHttpRequest req) {
 		return "ws://" + req.headers().get(HOST) + WEBSOCKET_PATH;
 	}
@@ -690,27 +712,6 @@ public class WebSocketMessageHandler extends SimpleChannelInboundHandler<Object>
 		response.headers().set(HttpHeaders.CONTENT_LENGTH, buf.readableBytes());
 		sendHttpResponse(ctx, req, response );
 	}
-	@Override
-	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-		//连接断开后 就会调用这里
-		logger.info(curUser+" @ "+ctx +" disconnected by channelInactive");
-		if(curUser !=null && curUser.userinfo !=null){
-			SessionActionHandler.exitroom(Integer.parseInt(curUser.sessionid), curUser);
-		}
-	}
-	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-		logger.error(curUser+" @ "+ctx +" disconnected by exceptionCaught" + cause.getMessage());
-		if(curUser !=null && curUser.userinfo !=null){
-			SessionActionHandler.exitroom(Integer.parseInt(curUser.sessionid), curUser);
-		}
-	}
-	public static void clientCleanUp(ChannelHandlerContext ctx) {
-		//TODO onClose();
-		ctx.channel().close();
-		ctx.close();
-	}
-	
 	
 }
 

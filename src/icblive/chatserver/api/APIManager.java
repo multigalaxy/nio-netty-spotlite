@@ -38,7 +38,7 @@ import io.dropwizard.metrics.Meter;
 import io.dropwizard.metrics.Timer;
 
 /**
- * @author jgao
+ * @author xiaol
  *
  */
 public class APIManager {

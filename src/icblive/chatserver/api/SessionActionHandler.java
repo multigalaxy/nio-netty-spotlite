@@ -22,7 +22,7 @@ import icblive.chatserver.utils.RedisHelper;
 import icblive.chatserver.utils.SupportMultiLangClientMsg;
 
 /**
- * @author jgao
+ * @author xiaol
  *
  */
 public class SessionActionHandler {

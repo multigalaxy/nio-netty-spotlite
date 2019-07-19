@@ -24,7 +24,7 @@ import redis.clients.jedis.JedisPubSub;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
 /**
- * @author jgao
+ * @author xiaol
  *
  */
 public class InternalMsgHandler implements Runnable{
@@ -39,6 +39,8 @@ public class InternalMsgHandler implements Runnable{
 
 	public static final String SUB_QUEUE_NAME = ChangbaConfig.getConfig().rediskey_brodcastmsg;
 	public static final String SUB_QUEUE_NAME2 = SUB_QUEUE_NAME +":"+ ChangbaConfig.getConfig().ws_ip+":"+ChangbaConfig.getConfig().ws_port;
+
+	// 该线程接收订阅的消息，交给apicallback去处理
 	@Override
 	public void run() {
 		try{

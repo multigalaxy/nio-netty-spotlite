@@ -13,7 +13,7 @@ import com.google.common.collect.Sets;
 import icblive.chatserver.utils.RedisHelper;
 
 /**
- * @author jgao
+ * @author xiaol
  *
  */
 public class RoomData {

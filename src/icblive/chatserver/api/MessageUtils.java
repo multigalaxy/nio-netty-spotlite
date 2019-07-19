@@ -31,7 +31,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 import io.netty.util.ReferenceCountUtil;
 
 /**
- * @author jgao
+ * @author xiaol
  *
  */
 public class MessageUtils {
@@ -98,12 +98,7 @@ public class MessageUtils {
 	
 	//异步发送消息给用户, 不是为了提高效率, 而是用异步线程,减少执行时间, 保证并发线程访问数据的安全
 	public static void sendToUserAsync(final UserData user, final String [] messages) {
-		exe.submit(new Runnable() {
-			@Override
-			public void run() {
-				sendToUser(user, messages);
-			}
-		});
+		exe.submit(()->{sendToUser(user, messages);});
 	}
 
 	@Deprecated //请用下面的sendToRoom()

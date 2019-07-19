@@ -13,7 +13,7 @@ import icblive.chatserver.utils.ChangbaMetrics;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
- * @author jgao
+ * @author xiaol
  *
  */
 public class UserData {

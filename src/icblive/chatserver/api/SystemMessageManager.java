@@ -14,7 +14,7 @@ import icblive.chatserver.model.json.NoticeMessage;
 import icblive.chatserver.model.json.SystemWsMessage;
 
 /**
- * @author jgao
+ * @author xiaol
  *
  */
 public class SystemMessageManager {

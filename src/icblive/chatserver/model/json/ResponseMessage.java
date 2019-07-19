@@ -6,7 +6,7 @@ package icblive.chatserver.model.json;
 import java.util.List;
 
 /**
- * @author jgao
+ * @author xiaol
  * HTTP(PHP) API 返回的数据结构 
  */
 

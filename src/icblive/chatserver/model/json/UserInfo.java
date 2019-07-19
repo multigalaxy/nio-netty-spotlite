@@ -8,7 +8,7 @@ import java.util.Map;
 import com.alibaba.fastjson.annotation.JSONField;
 
 /**
- * @author jgao
+ * @author xiaol
  *
  */
 public class UserInfo {
