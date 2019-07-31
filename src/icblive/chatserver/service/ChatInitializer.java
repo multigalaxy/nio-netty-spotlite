@@ -25,16 +25,22 @@ public class ChatInitializer extends ChannelInitializer<SocketChannel> {
 //        p.addLast("codec-http", new HttpServerCodec());
 //        p.addLast("aggregator", new HttpObjectAggregator(65536));
 //        p.addLast("handler", new WebSocketServerHandler());
-		
+
+        // 添加处理句柄：每个socket链接一个线程，只实例化一次所有对象，即所有句柄都处在同一个线程里，防止发生线程争锁
         ch.pipeline().addLast(
-                new HttpRequestDecoder(),  // 1、bytebuf数据流转成http对象
-                new HttpObjectAggregator(65536),  // 2、把bytebuf流转成单一的fullhttprequest或fullhttpresponse对象
-                new HttpResponseEncoder(),  // 4、http对象转成bytebuf流
+                // 1、http协议解析：bytebuf数据流转成http消息对象，包含（httpcontent、lasthttpcontent、httpmessage等）【httpmessage=httprequest/httpresponse，取决于处理请求还是响应，此处是请求】
+                // HttpObjectDecoder：如果是chunked编码的消息，将生成3个对象：httprequest、第一个httpcontent、最后一个lasthttpcontent。
+                new HttpRequestDecoder(),
+                // 2、把上面的httpmessage、httpcontents消息聚合成单一的fullhttprequest(http)对象，尤其chunked编码很有效
+                new HttpObjectAggregator(65536),
+                // 4、http对象转成bytebuf流
+                new HttpResponseEncoder(),
  //               new IdleStateHandler(60, 60, 0,TimeUnit.SECONDS),
 //                new WebSocketServerProtocolHandler("/websocket"),
 //                new WebSocketTextandler()
                 //new WebSocketServerHandlerTest()
-                new WebSocketMessageHandler(  )  // 3、业务逻辑
+                // 3、业务逻辑
+                new WebSocketMessageHandler(  )
         		);
     }
 }

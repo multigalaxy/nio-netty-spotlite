@@ -206,7 +206,7 @@ public class WebSocketMessageHandler extends SimpleChannelInboundHandler<Object>
 		}
 		// 按请求协议分类处理请求
 		if (msg instanceof FullHttpRequest) {
-			// http请求，如spotlite后端服务
+			// http请求，如spotlite后端服务和socket链接的建立
 			handleHttpRequest(ctx, (FullHttpRequest) msg);
 		} else if (msg instanceof WebSocketFrame) {
 			// websocket请求，如app和spotlite后端服务都会有
@@ -214,7 +214,7 @@ public class WebSocketMessageHandler extends SimpleChannelInboundHandler<Object>
 		}
 	}
 	
-	// 3、1、客户端ws消息处理
+	// 3、1、客户端socket消息处理
 	private void onMessage(ChannelHandlerContext ctx, String requestMessage) throws Exception {
 		if (this.curUser == null || Strings.isNullOrEmpty(this.curUser.getUserid())) {
 			logger.error( clientLogInfo+" onMessage: curuser is null when jsonMessage="+requestMessage );
@@ -269,7 +269,7 @@ public class WebSocketMessageHandler extends SimpleChannelInboundHandler<Object>
 		
 	}
 	 
-	// 3（1）...、处理直播评论消息
+	// 3.1（1）、处理直播评论消息
 	private void onChatMessage(String type, String requestMessage) {
 		ChatRequestMessage msg = JSON.parseObject(requestMessage, ChatRequestMessage.class);
 		long banchattime = LiveCache.disableMsgUserTimeStamp(curUser.getUserid(), curUser.ownerid);
@@ -335,7 +335,7 @@ public class WebSocketMessageHandler extends SimpleChannelInboundHandler<Object>
 	}
 
 
-	// 2...、
+	// 2.1 打开websocket链接，校验是否允许接下来握手，缓存user信息
 	private boolean onOpen(ChannelHandlerContext ctx, FullHttpRequest req) {
 		List<NameValuePair> realParams = null;
 		boolean debugMode = false;
@@ -428,7 +428,7 @@ public class WebSocketMessageHandler extends SimpleChannelInboundHandler<Object>
 		return false;
 	}
 
-	// 2、处理http请求
+	// 2、处理http请求：包含后端http访问api和ws的链接部分
 	private void handleHttpRequest(ChannelHandlerContext ctx, FullHttpRequest req) throws Exception {
 		// Handle a bad request.
 		if (!req.getDecoderResult().isSuccess()) {
@@ -452,7 +452,7 @@ public class WebSocketMessageHandler extends SimpleChannelInboundHandler<Object>
 			sendHttpResponse(ctx, req, response );
 			return;
 		}
-		// 握手协议
+		// ws握手协议
 		WebSocketServerHandshakerFactory wsFactory = new WebSocketServerHandshakerFactory(getWebSocketLocation(req), null, false);
 		handshaker = wsFactory.newHandshaker(req);
 		if (handshaker == null) {
@@ -474,16 +474,19 @@ public class WebSocketMessageHandler extends SimpleChannelInboundHandler<Object>
 			}
 		}
 	}
-	// websocket客户端链接
+
+	// websocket链接地址
 	private static String getWebSocketLocation(FullHttpRequest req) {
 		return "ws://" + req.headers().get(HOST) + WEBSOCKET_PATH;
 	}
+
+	// 发送http响应
 	private static void sendHttpResponse(ChannelHandlerContext ctx, FullHttpRequest req, FullHttpResponse res) {
 		// Generate an error page if response getStatus code is not OK (200).
 		if (res.getStatus().code() != 200) {
 			ByteBuf buf = Unpooled.copiedBuffer(res.getStatus().toString(), CharsetUtil.UTF_8);
 			res.content().writeBytes(buf);
-			buf.release();
+			buf.release();  // 释放buf
 			setContentLength(res, res.content().readableBytes());
 		}
 
@@ -537,7 +540,8 @@ public class WebSocketMessageHandler extends SimpleChannelInboundHandler<Object>
 			logger.error(clientLogInfo+" ERROR: onmessage.", e );
         }
 	}
-	
+
+	// 2.1 处理后端http-api
 	private void adminHttpMode(ChannelHandlerContext ctx, FullHttpRequest req) {
 		//http的接口，用来获取人在哪个房间，以及所有在线的人等。
 		String uri = req.getUri() ;
